@@ -6,7 +6,9 @@ import plotly.graph_objects as go
 @st.cache
 def load_data():
     try:
-        return pd.read_pickle('dataset/preprocessed/combined.pkl')
+        df =  pd.read_pickle('dataset/preprocessed/combined.pkl')
+        df_imputed =  pd.read_pickle('dataset/preprocessed/imputed.pkl')
+        return df,df_imputed
     except:
         print('Something went wrong')
         return None
@@ -75,20 +77,27 @@ def plot(df):
 
 
 def main():
-    df = load_data()
+    df,df_imputed = load_data()
     hotelIds = df.HotelId.unique()
 
     st.subheader('City Analysis')
-    hotelId = st.selectbox('Select hotel',hotelIds)
+    hotelId = st.sidebar.selectbox('Select hotel',hotelIds)
     # start_date = st.sidebar.date_input('Start date', datetime(2018, 1, 1))
     # end_date   = st.sidebar.date_input('End date', datetime(2018, 6, 1))
     # print(df['TargetDate']>=start_date)
+    isImputed = st.sidebar.checkbox('Impute Values')
     if hotelId:
-        filtered = df[(df['HotelId']==hotelId)]# & (df['TargetDate']>=start_date) & (df['TargetDate']<=end_date)]
+        if isImputed:
+            filtered = df_imputed[(df_imputed['HotelId']==hotelId)]# & (df['TargetDate']>=start_date) & (df['TargetDate']<=end_date)]
+        else:
+            filtered = df[(df['HotelId']==hotelId)]# & (df['TargetDate']>=start_date) & (df['TargetDate']<=end_date)]
         definative,rooms,prices = plot(filtered)
         st.write(definative)
         st.write(rooms)
         st.write(prices)
+
+        st.subheader('Hotel Description')
+        st.write(df.describe())
 
 if __name__ == "__main__":
     main()
