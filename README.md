@@ -11,7 +11,8 @@ File structure for the thesis is as follows:
     └── requirements.txt
 
 ## How to run
-Latest code for thesis can be found on repository: https://github.com/ahmadabdullah247/thesis.git 
+Latest code for thesis can be found on repository: https://github.com/ahmadabdullah247/thesis.git
+Data files can be requested via email.
 
 1. Clone repository
 ```bash
